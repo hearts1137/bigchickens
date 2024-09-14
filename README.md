@@ -65,6 +65,11 @@ systemctl start bigchickens
 systemctl status bigchickens
 docker ps
 ```
+Copy the social login NextCloud app to the apps directory
+```
+sudo su -
+cd /home/ec2-user/bigchickens
+cp -R sociallogin 
 Some helpful commands while testing to clean the environment
 ```
 rm -rf logs/ mariadb/ nextcloud/
