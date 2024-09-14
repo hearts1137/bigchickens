@@ -1,3 +1,8 @@
+networks:
+  nextcloud-net:
+    driver: bridge
+  keycloak-net:
+
 services:
 
   mariadb:
@@ -12,6 +17,8 @@ services:
       - "3306:3306"
     volumes:
       - ./mariadb:/var/lib/mysql
+    networks:
+      - nextcloud-net
 
   nextcloud:
     image: nextcloud:latest
@@ -29,13 +36,17 @@ services:
       NEXTCLOUD_TRUSTED_DOMAINS: www.bigchickens.net
     volumes:
       - ./nextcloud:/var/www/html
+      - ./app-hooks/before-starting:/docker-entrypoint-hooks.d/before-starting
+      - ./sociallogin:/tmp/sociallogin
     depends_on:
       - mariadb
+    networks:
+      - nextcloud-net
 
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     container_name: keycloak
-    command: start-dev
+    command: start-dev --import-realm
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=adminpassword
@@ -46,8 +57,12 @@ services:
     ports:
       - "8080:8080"
     restart: always
+    volumes:
+      - ./kc:/opt/keycloak/data/import/
     depends_on:
       - mariadb
+    networks:
+      - keycloak-net
 
   nginx:
     image: nginx:latest
@@ -63,9 +78,22 @@ services:
     depends_on:
       - nextcloud
       - keycloak
+    networks:
+      - keycloak-net
+      - nextcloud-net
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    ports:
+      - 9443:9443
+    volumes:
+      - portainer:/data
+      - /var/run/docker.sock:/var/run/docker.sock
+    restart: unless-stopped
 
 volumes:
   nginx:
   keycloak_data:
   database:
   nextcloud:
+  portainer:
