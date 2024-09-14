@@ -49,4 +49,9 @@ https://github.com/jesseduffield/lazydocker
 ```
 chmod +x lazydocker
 ```
+To get your own Let's Encrypt Certificate you need to run the following after you verify your AWS security group is open to 0.0.0.0/0 on port 80 for the duration of the cert capture. Set it back to something secure when done gathering the cert and private key.
+```
+sudo su -
+certbot certonly --standalone --noninteractive --agree-tos --no-eff-email --cert-name bigchickens.net -d bigchickens.net -d www.bigchickens.net -m info@bigchickens.net
+```
 
