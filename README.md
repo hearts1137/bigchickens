@@ -6,7 +6,7 @@ Create the RHEL 8 EC2 and add the following user-data
 dnf clean all && dnf makecache
 dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
-dnf -y update --nobest
+dnf -y update
 dnf install -y dos2unix git vim mlocate docker-ce docker-ce-cli containerd.io docker-compose-plugin
 updatedb
 systemctl enable docker
