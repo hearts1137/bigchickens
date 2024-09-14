@@ -39,3 +39,8 @@ ExecStop=/bin/bash -c "docker compose -f /home/ec2-user/bigchickens/docker-compo
 [Install]
 WantedBy=multi-user.target
 ```
+SOme helpful commands while testing to clean the environment
+```
+docker system prune --all --volumes
+rm -rf logs/ mariadb/ nextcloud/
+```
