@@ -7,7 +7,8 @@ dnf clean all && dnf makecache
 dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
 dnf config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
 dnf -y update --nobest
-dnf install -y dos2unix git vim docker-ce docker-ce-cli containerd.io docker-compose-plugin
+dnf install -y dos2unix git vim mlocate docker-ce docker-ce-cli containerd.io docker-compose-plugin
+updatedb
 systemctl enable docker
 systemctl reboot
 ```
@@ -39,7 +40,7 @@ ExecStop=/bin/bash -c "docker compose -f /home/ec2-user/bigchickens/docker-compo
 [Install]
 WantedBy=multi-user.target
 ```
-SOme helpful commands while testing to clean the environment
+Some helpful commands while testing to clean the environment
 ```
 rm -rf logs/ mariadb/ nextcloud/
 docker system prune --all --volumes
@@ -53,5 +54,19 @@ To get your own Let's Encrypt Certificate you need to run the following after yo
 ```
 sudo su -
 certbot certonly --standalone --noninteractive --agree-tos --no-eff-email --cert-name bigchickens.net -d bigchickens.net -d www.bigchickens.net -m info@bigchickens.net
+cp /etc/letsencrypt/live/bigchickens.net/fullchain.pem /home/ec2/bigchickens/nginx/ssl/
+cp /etc/letsencrypt/live/bigchickens.net/privkey.pem /home/ec2/bigchickens/nginx/ssl/
 ```
-
+You are not ready to start the docker compose stack
+```
+sudo su -
+cd /home/ec2-user/bigchickens/
+docker compose up
+```
+Watch the logs for errors and tweak as necessary. When it is running properly enable the system service
+```
+systemctl enable bigchickens
+systemctl start bigchickens
+systemctl status bigchickens
+docker ps
+```
