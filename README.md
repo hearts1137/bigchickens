@@ -43,6 +43,8 @@ WantedBy=multi-user.target
 Lazydocker is a cool TUI to look over the docker environment
 https://github.com/jesseduffield/lazydocker
 ```
+sudo su -
+cd /home/ec2-user/bigchickens/
 chmod +x lazydocker
 ```
 To get your own Let's Encrypt Certificate you need to run the following after you verify your AWS security group is open to 0.0.0.0/0 on port 80 for the duration of the cert capture. Set it back to something secure when done gathering the cert and private key.
@@ -60,6 +62,7 @@ docker compose up
 ```
 Watch the logs for errors and tweak as necessary. When it is running properly enable the system service
 ```
+sudo su -
 systemctl enable bigchickens
 systemctl start bigchickens
 systemctl status bigchickens
@@ -69,7 +72,8 @@ Copy the social login NextCloud app to the apps directory
 ```
 sudo su -
 cd /home/ec2-user/bigchickens
-cp -R sociallogin 
+cp -R sociallogin
+```
 Some helpful commands while testing to clean the environment
 ```
 rm -rf logs/ mariadb/ nextcloud/
