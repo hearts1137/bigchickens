@@ -1,6 +1,5 @@
-# bigchickens
 ![bigchickens](https://github.com/user-attachments/assets/9fbab409-1752-4fb2-ab48-1636fbe73db1)
-Project based on docker compose running on a RHEL 8 EC2 t3a.medium in AWS. All latest containers and an emphasis on security.
+# Project based on docker compose running on a RHEL 8 EC2 t3a.medium in AWS. All latest containers and an emphasis on security.
 Create the RHEL 8 EC2 and add the following user-data
 ```
 dnf clean all && dnf makecache
@@ -79,3 +78,12 @@ Some helpful commands while testing to clean the environment
 rm -rf logs/ mariadb/ nextcloud/
 docker system prune --all --volumes
 ```
+
+# TO DO LIST
+1. Send all docker container logs to S3 log bucket
+2. Code clean up of keycloak so not to use start-dev, use mariadb as database engine
+3. Develop procedure to export keycloak users inclusive of usernames and passwords
+4. Create amd configure NextCloud keycloak realm that works with NextCloud SocialLogin app settings for authentication and authorization
+5. Export nextcloud realm (full export, not partial) and auto import into keycloak at startup (need the realm.json, I know how to import)
+6. Code review of nginx.conf for security best practices
+7. More I will think of later
