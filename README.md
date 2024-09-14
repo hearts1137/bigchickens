@@ -44,3 +44,9 @@ SOme helpful commands while testing to clean the environment
 rm -rf logs/ mariadb/ nextcloud/
 docker system prune --all --volumes
 ```
+Lazydocker is a cool TUI to look over the docker environment
+https://github.com/jesseduffield/lazydocker
+```
+chmod +x lazydocker
+```
+
