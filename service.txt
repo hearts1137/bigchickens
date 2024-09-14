@@ -1,0 +1,14 @@
+# place in /etc/systemd/system/project.service and adjust home dir
+[Unit]
+Description=bigchickens
+After=docker.service
+Requires=docker.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/bin/bash -c "docker compose -f /home/ec2-user/project/docker-compose.yml up --detach"
+ExecStop=/bin/bash -c "docker compose -f /home/ec2-user/project/docker-compose.yml stop"
+
+[Install]
+WantedBy=multi-user.target
