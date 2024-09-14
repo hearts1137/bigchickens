@@ -41,6 +41,6 @@ WantedBy=multi-user.target
 ```
 SOme helpful commands while testing to clean the environment
 ```
-docker system prune --all --volumes
 rm -rf logs/ mariadb/ nextcloud/
+docker system prune --all --volumes
 ```
