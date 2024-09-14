@@ -1,5 +1,5 @@
 # bigchickens
-
+![bigchickens](https://github.com/user-attachments/assets/9fbab409-1752-4fb2-ab48-1636fbe73db1)
 Project based on docker compose running on a RHEL 8 EC2 t3a.medium in AWS. All latest containers and an emphasis on security.
 Create the RHEL 8 EC2 and add the following user-data
 ```
@@ -43,5 +43,3 @@ ExecStop=/bin/bash -c "docker compose -f /home/ec2-user/bigchickens/docker-compo
 [Install]
 WantedBy=multi-user.target
 ```
-
-![bigchickens](https://github.com/user-attachments/assets/9fbab409-1752-4fb2-ab48-1636fbe73db1)
