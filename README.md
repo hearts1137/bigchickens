@@ -40,11 +40,6 @@ ExecStop=/bin/bash -c "docker compose -f /home/ec2-user/bigchickens/docker-compo
 [Install]
 WantedBy=multi-user.target
 ```
-Some helpful commands while testing to clean the environment
-```
-rm -rf logs/ mariadb/ nextcloud/
-docker system prune --all --volumes
-```
 Lazydocker is a cool TUI to look over the docker environment
 https://github.com/jesseduffield/lazydocker
 ```
@@ -69,4 +64,9 @@ systemctl enable bigchickens
 systemctl start bigchickens
 systemctl status bigchickens
 docker ps
+```
+Some helpful commands while testing to clean the environment
+```
+rm -rf logs/ mariadb/ nextcloud/
+docker system prune --all --volumes
 ```
