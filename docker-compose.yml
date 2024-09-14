@@ -1,0 +1,71 @@
+services:
+
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql_root_password
+      MYSQL_PASSWORD: mysql_password
+      MYSQL_DATABASE: nextcloud_data
+      MYSQL_USER: nextcloud_dbuser
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mariadb:/var/lib/mysql
+
+  nextcloud:
+    image: nextcloud:latest
+    container_name: nextcloud
+    restart: unless-stopped
+    environment:
+      MYSQL_PASSWORD: mysql_password
+      MYSQL_DATABASE: nextcloud_data
+      MYSQL_USER: nextcloud_dbuser
+      MYSQL_HOST: mariadb
+      OVERWRITEWEBROOT: /nextcloud
+      NEXTCLOUD_ADMIN_USER: admin
+      NEXTCLOUD_ADMIN_PASSWORD: adminpassword
+      NEXTCLOUD_HOSTNAME: www.bigchickens.net
+      NEXTCLOUD_TRUSTED_DOMAINS: www.bigchickens.net
+    volumes:
+      - ./nextcloud:/var/www/html
+    depends_on:
+      - mariadb
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    command: start-dev
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=adminpassword
+      - KC_HTTP_RELATIVE_PATH=/keycloak
+      - KC_PROXY=edge
+      - KC_HOSTNAME_URL=https://www.bigchickens.net/keycloak/
+      - KC_HOSTNAME_ADMIN_URL=https://www.bigchickens.net/keycloak/
+    ports:
+      - "8080:8080"
+    restart: always
+    depends_on:
+      - mariadb
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/html:/etc/nginx/html
+      - ./nginx/ssl:/etc/nginx/ssl
+      - ./logs:/var/log/nginx/
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - nextcloud
+      - keycloak
+
+volumes:
+  nginx:
+  keycloak_data:
+  database:
+  nextcloud:
