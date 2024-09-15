@@ -1,8 +1,3 @@
-networks:
-  nextcloud-net:
-    driver: bridge
-  keycloak-net:
-
 services:
 
   mariadb:
@@ -36,6 +31,8 @@ services:
       NEXTCLOUD_TRUSTED_DOMAINS: www.bigchickens.net
     volumes:
       - ./nextcloud:/var/www/html
+      - ./app-hooks/pre-installation:/docker-entrypoint-hooks.d/pre-installation
+      - ./app-hooks/post-installation:/docker-entrypoint-hooks.d/post-installation
       - ./app-hooks/before-starting:/docker-entrypoint-hooks.d/before-starting
       - ./sociallogin:/tmp/sociallogin
     depends_on:
@@ -46,7 +43,7 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     container_name: keycloak
-    command: start-dev --import-realm
+    command: start --optimized --import-realm --proxy-headers xforwarded --hostname www.bigchickens.com
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=adminpassword
@@ -62,7 +59,7 @@ services:
     depends_on:
       - mariadb
     networks:
-      - keycloak-net
+      - nextcloud-net
 
   nginx:
     image: nginx:latest
@@ -79,17 +76,27 @@ services:
       - nextcloud
       - keycloak
     networks:
-      - keycloak-net
       - nextcloud-net
 
   portainer:
     image: portainer/portainer-ce:latest
+    container_name: portainer
+    volumes:
+      - ./portainer:/data
+      - ./nginx/ssl:/certs
+      - /var/run/docker.sock:/var/run/docker.sock
     ports:
       - 9443:9443
-    volumes:
-      - portainer:/data
-      - /var/run/docker.sock:/var/run/docker.sock
+    environment:
+      VIRTUAL_HOST: www.bigchickens.com
     restart: unless-stopped
+    command: --sslcert /certs/fullchain.pem --sslkey /certs/privkey.pem
+    networks:
+      - nextcloud-net
+
+networks:
+  nextcloud-net:
+    driver: bridge
 
 volumes:
   nginx:
