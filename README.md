@@ -1,6 +1,5 @@
 ![bigchickens](https://github.com/user-attachments/assets/9fbab409-1752-4fb2-ab48-1636fbe73db1)
-# Project based on docker compose running on a RHEL 8 EC2 t3a.medium in AWS. All latest containers and an emphasis on security.
-Create the RHEL 8 EC2 and add the following user-data
+# NextCloud, Keycloak, Nginx, MariaDB and Docker
 ```
 dnf clean all && dnf makecache
 dnf install -y https://dl.fedoraproject.org/pub/epel/epel-release-latest-8.noarch.rpm
@@ -68,6 +67,7 @@ systemctl status bigchickens
 docker ps
 ```
 Copy the social login NextCloud app to the apps directory
+https://apps.nextcloud.com/apps/sociallogin
 ```
 sudo su -
 cd /home/ec2-user/bigchickens
