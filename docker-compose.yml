@@ -32,6 +32,7 @@ services:
     volumes:
       - ./nextcloud:/var/www/html
       - ./sociallogin:/tmp/sociallogin
+      - ./app-hooks/post-installation:/docker-entrypoint-hooks.d/post-installation
     depends_on:
       - mariadb
     networks:
@@ -40,7 +41,7 @@ services:
   keycloak:
     image: quay.io/keycloak/keycloak:latest
     container_name: keycloak
-    command: start --optimized --import-realm --proxy-headers xforwarded --hostname www.bigchickens.com
+    command: start --optimized --import-realm --proxy-headers xforwarded --hostname www.bigchickens.net
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=adminpassword
@@ -88,6 +89,18 @@ services:
       VIRTUAL_HOST: www.bigchickens.com
     restart: unless-stopped
     command: --sslcert /certs/fullchain.pem --sslkey /certs/privkey.pem
+    networks:
+      - nextcloud-net
+
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    ports:
+      - 3000:3000
+    volumes:
+      - ./homepage:/app/config 
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
     networks:
       - nextcloud-net
 
