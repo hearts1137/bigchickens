@@ -1,0 +1,4 @@
+cp /lib/systemd/system/docker.service /etc/systemd/system/
+sed -i 's/\ -H\ fd:\/\///g' /etc/systemd/system/docker.service
+systemctl daemon-reload
+systemctl restart docker
