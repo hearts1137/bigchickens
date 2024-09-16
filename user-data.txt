@@ -53,8 +53,29 @@ cat <<EOF >> /etc/security/limits.conf
 * soft nofile 100000
 EOF
 
+#create cleanup file
+cat <<EOF >> /home/ec2-user/clean.sh
+yes | docker system prune --all --volumes
+rm -rf logs/ mariadb/ nextcloud/
+chown -R ec2-user:ec2-user /home/ec2-user/
+EOF
+chmod +x /home/ec2-user/clean.sh
+
+# modify docker
+cat <<EOF >> /etc/docker/daemon.json
+{
+  "hosts": ["unix:///var/run/docker.sock", "tcp://0.0.0.0:2375"],
+  "debug" : true,
+  "default-address-pools" : [{ "base" : "192.168.46.0/16", "size" : 24}]
+}
+EOF
 # disable alias in .bashrc 
 sed -i /alias/d $HOME/.bashrc
+
+cp /lib/systemd/system/docker.service /etc/systemd/system/
+sed -i 's/\ -H\ fd:\/\///g' /etc/systemd/system/docker.service
+systemctl daemon-reload
+systemctl restart docker
 
 # prvents the system to inacesible doe to sitig 
 touch /var/log/lastlog
