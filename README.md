@@ -84,7 +84,7 @@ docker system prune --all --volumes
 
 # TO DO LIST
 1. Send all docker container logs to S3 log bucket
-2. Code clean up of keycloak so not to use start-dev, use mariadb as database engine
+2. Code clean up of keycloak ~~so not to use start-dev,~~ use mariadb as database engine
 3. Develop procedure to export keycloak users inclusive of usernames and passwords
 4. Create amd configure NextCloud keycloak realm that works with NextCloud SocialLogin app settings for authentication and authorization
 5. Export nextcloud realm (full export, not partial) and auto import into keycloak at startup (need the realm.json, I know how to import)
