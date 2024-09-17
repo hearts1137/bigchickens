@@ -143,6 +143,7 @@ cd /home/ec2-user/bigchickens
 cp -R sociallogin
 ```
 Support topic I started on NextCloud support forums
+---
 https://help.nextcloud.com/t/occ-disable-and-remove-apps-at-docker-compose-startup/204048/3
 ---
 Some helpful commands while testing to clean the environment
