@@ -60,17 +60,17 @@ cat <<EOF >> /etc/security/limits.conf
 EOF
 
 #create project directory
-mkdir /home/ec2-user/bigchicken/
+mkdir /home/ec2-user/bigchickens/
 
 #create cleanup file
-cat <<EOF >> /home/ec2-user/bigchicken/clean.sh
+cat <<EOF >> /home/ec2-user/bigchickens/clean.sh
 yes | docker system prune --all --volumes
 rm -rf logs/ mariadb/ nextcloud/
 chown -R ec2-user:ec2-user /home/ec2-user/
 EOF
 
 #make cleanup file executable
-chmod +x /home/ec2-user/bigchicken/clean.sh
+chmod +x /home/ec2-user/bigchickens/clean.sh
 
 # modify docker
 cat <<EOF >> /etc/docker/daemon.json
