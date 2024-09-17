@@ -151,6 +151,5 @@ https://help.nextcloud.com/t/occ-disable-and-remove-apps-at-docker-compose-start
 2. Code clean up of keycloak ~~so not to use start-dev,~~ use mariadb as database engine
 3. Develop procedure to export keycloak users inclusive of usernames and passwords
 4. Create amd configure NextCloud keycloak realm that works with NextCloud SocialLogin app settings for authentication and authorization
-5. Export nextcloud realm (full export, not partial) and auto import into keycloak at startup (need the realm.json, I know how to import)
-6. Code review of nginx.conf for security best practices
-7. More I will think of later
+5. Code review of nginx.conf for security best practices
+6. More I will think of later
