@@ -7,16 +7,6 @@
         icon: nextcloud.svg
         href: https://www.bigchickens.net/nextcloud
         description: Storage from AWS S3
-    - Portainer:
-        icon: portainer.svg
-        description: Docker Management GUI
-        href: https://www.bigchickens.net:9443
-        widget:
-          type: portainer
-          url: http://192.168.2.4:9000
-          env: 2
-          key: ptr_YC4zq08ZQ9ddAq/TJsrg/b2MhZfOz/Fl3awhL5juzhM=
-- Services:
     - GitLab:
         icon: gitlab.svg
         href: https://gitlab.stitches.mil
@@ -25,3 +15,13 @@
         icon: github.svg
         href: https://github.com/hearts1137/bigchickens
         description: source code
+- Docker:
+    - Portainer:
+        icon: portainer.svg
+        description: Docker Management GUI
+        href: https://www.bigchickens.net:9443
+        widget:
+          type: portainer
+          url: http://192.168.4.2:9000
+          env: 2
+          key: ptr_C3LpUZPERwkU5HL7PzJQFKx3uTKaoawelFccWa+Y62M=
