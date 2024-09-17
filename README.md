@@ -146,11 +146,6 @@ Support topic I started on NextCloud support forums
 ---
 https://help.nextcloud.com/t/occ-disable-and-remove-apps-at-docker-compose-startup/204048/3
 ---
-Some helpful commands while testing to clean the environment
-```
-rm -rf logs/ mariadb/ nextcloud/
-docker system prune --all --volumes
-```
 # TO DO LIST
 1. Send all docker container logs to S3 log bucket
 2. Code clean up of keycloak ~~so not to use start-dev,~~ use mariadb as database engine
