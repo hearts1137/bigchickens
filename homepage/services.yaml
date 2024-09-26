@@ -1,0 +1,27 @@
+- Services:
+    - Keycloak:
+        icon: keycloak.svg
+        href: https://www.bigchickens.net/keycloak
+        description: Single Sign On
+    - NextCloud:
+        icon: nextcloud.svg
+        href: https://www.bigchickens.net/nextcloud
+        description: Storage from AWS S3
+    - GitHub:
+        icon: github.svg
+        href: https://github.com/hearts1137/bigchickens
+        description: source code
+    - Guacamole:
+        icon: guacamole.svg
+        href: https://guac.bigchickens.net/guacamole
+        description: Server access
+- Docker:
+    - Portainer:
+        icon: portainer.svg
+        description: Docker Management GUI
+        href: https://www.bigchickens.net/portainer
+        widget:
+          type: portainer
+          url: http://portainer:9000
+          env: 2
+          key: ptr_JuQytmhBq11bR4S0BY046rzTX8Fz4DhGSRVMagS8JHc=
