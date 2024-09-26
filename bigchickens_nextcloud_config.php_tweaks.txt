@@ -1,0 +1,3 @@
+  'overwritehost' => 'bigchickens.net',
+  'overwriteprotocol' => 'https',
+  'overwrite.cli.url' => 'http://www.bigchickens.net/nextcloud',
