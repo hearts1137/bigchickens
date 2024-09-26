@@ -38,17 +38,18 @@ services:
       NEXTCLOUD_TRUSTED_DOMAINS: www.bigchickens.net
       NC_DEFAULT_APP: files
       NC_THEME_NAME: Big Chickens
-      NC_THEME_SLOGAN: 
+      NC_THEME_SLOGAN: ''
       NC_THEME_URL: https://www.bigchickens.net/nextcloud/
       NC_THEME_PRIMARY_COLOR: '#c98879'
       NC_THEME_BACKGROUND_COLOR: '#c98879'
       NC_THEME_BACKGROUND_image: /tmp/theming/background
       NC_THEME_LOGO_HEADER_IMAGE: /tmp/theming/logoheader
-      NC_THEME_FAVICON: /tmp/theming/favicon.png
-      NC_APP_ID: ocaz6wuy7gs5
+      NC_THEME_FAVICON: /tmp/theming/favicon
       NC_THEME_DISABLE_USER_THEMING: 1
       NC_WANTED_APPS: admin_audit sociallogin files_external serverinfo logreader
       NC_GROUPS: sales marketing alldata
+      NC_CONFIGS: add_update##overwritehost##www.bigchickens.net add_update##overwriteprotocol##https add_update##overwrite.cli.url##http://www.bigchickens.net/nextcloud
+      NC_CONFIGS_DONT_ECHO_CONFIG: 
     volumes:
       - ./nextcloud:/var/www/html
       - ./sociallogin:/tmp/apps/sociallogin
