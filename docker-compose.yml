@@ -49,7 +49,8 @@ services:
       NC_WANTED_APPS: admin_audit sociallogin files_external serverinfo logreader
       NC_GROUPS: sales marketing alldata
       NC_CONFIGS: add_update##overwritehost##www.bigchickens.net add_update##overwriteprotocol##https add_update##overwrite.cli.url##http://www.bigchickens.net/nextcloud
-      NC_CONFIGS_DONT_ECHO_CONFIG: 
+      NC_CONFIGS_DONT_ECHO_CONFIG: true
+      NC_FILES_EXTERNAL_CONFIG_PATH: /tmp/theming/71-files_external.json
     volumes:
       - ./nextcloud:/var/www/html
       - ./sociallogin:/tmp/apps/sociallogin
