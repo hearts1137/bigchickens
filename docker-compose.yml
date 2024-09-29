@@ -46,7 +46,7 @@ services:
       NC_THEME_LOGO_HEADER_IMAGE: /tmp/theming/logoheader
       NC_THEME_FAVICON: /tmp/theming/favicon
       NC_THEME_DISABLE_USER_THEMING: 1
-      NC_WANTED_APPS: admin_audit sociallogin files_external serverinfo logreader
+      NC_WANTED_APPS: admin_audit sociallogin files_external serverinfo logreader theming_customcss
       NC_GROUPS: sales marketing alldata
       NC_CONFIGS: add_update##overwritehost##www.bigchickens.net add_update##overwriteprotocol##https add_update##overwrite.cli.url##http://www.bigchickens.net/nextcloud
       NC_CONFIGS_DONT_ECHO_CONFIG: true
@@ -54,6 +54,7 @@ services:
     volumes:
       - ./nextcloud:/var/www/html
       - ./sociallogin:/tmp/apps/sociallogin
+      - ./theming_customcss:/tmp/apps/theming_customcss
       - ./theming:/tmp/theming
       - ./app-hooks/before-starting:/docker-entrypoint-hooks.d/before-starting
     depends_on:
@@ -81,7 +82,7 @@ services:
     image: quay.io/keycloak/keycloak:latest
     container_name: keycloak
     restart: always
-    command: start --db=postgres --hostname https://www.bigchickens.net/keycloak/ --log="console,file" --log-file=/kc/logs/server.log
+    command: start --db=postgres --import-realm --hostname https://www.bigchickens.net/keycloak/
     environment:
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=adminpassword
@@ -97,7 +98,7 @@ services:
     ports:
       - "8080:8080"
     volumes:
-      - ./logs:/kc/logs
+      - ./kc:/opt/keycloak/data/import/
     networks:
       - nextcloud-net
 
