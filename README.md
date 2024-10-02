@@ -18,8 +18,10 @@ docker ps
 # TO DO LIST
 1. Send all docker container logs to S3 log bucket
 2. Code clean up of keycloak ~~so not to use start-dev,~~ ~~use postgres as database engine~~
-3. Use postgres for both keycloak and nextcloud, eliminating mariaDB
+~~3. Use postgres for both keycloak and nextcloud, eliminating mariaDB~~
 4. ~~Develop procedure to export keycloak users inclusive of usernames and passwords~~
-5. Create amd configure NextCloud keycloak realm that works with NextCloud SocialLogin app settings for authentication and authorization
+5. ~~Create amd configure NextCloud keycloak realm that works with NextCloud SocialLogin app settings for authentication and authorization~~
 6. Code review of nginx.conf for security best practices
-7. More I will think of later
+7. Add MariaDB so one container covers Nextcloud and Keycloak
+8. Develop centralized logging solution
+9. More I will think of later
