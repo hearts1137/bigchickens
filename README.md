@@ -22,6 +22,6 @@ docker ps
 4. ~~Develop procedure to export keycloak users inclusive of usernames and passwords~~
 5. ~~Create amd configure NextCloud keycloak realm that works with NextCloud SocialLogin app settings for authentication and authorization~~
 6. Code review of nginx.conf for security best practices
-7. Add MariaDB so one container covers Nextcloud and Keycloak
+7. COnfigure MariaDB so one container covers Nextcloud and Keycloak
 8. Develop centralized logging solution
 9. More I will think of later
