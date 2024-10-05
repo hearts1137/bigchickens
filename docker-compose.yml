@@ -1,0 +1,153 @@
+services:
+
+  mariadb:
+    image: mariadb:latest
+    container_name: mariadb
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: mysql_root_password
+      MYSQL_PASSWORD: mysql_password
+      MYSQL_DATABASE: nextcloud_data
+      MYSQL_USER: nextcloud_dbuser
+    healthcheck:
+      test: ["CMD", "healthcheck.sh", "--connect", "--innodb_initialized"]
+      start_period: 10s
+      interval: 10s
+      timeout: 5s
+      retries: 3
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mariadb:/var/lib/mysql
+    networks:
+      - nextcloud-net
+
+  nextcloud:
+    image: nextcloud:latest
+    container_name: nextcloud
+    restart: unless-stopped
+    environment:
+      MYSQL_PASSWORD: mysql_password
+      MYSQL_DATABASE: nextcloud_data
+      MYSQL_USER: nextcloud_dbuser
+      MYSQL_HOST: mariadb
+      OVERWRITEWEBROOT: /nextcloud
+      NEXTCLOUD_ADMIN_USER: admin
+      NEXTCLOUD_ADMIN_PASSWORD: adminpassword
+      NEXTCLOUD_HOSTNAME: www.largechickens.com
+      NEXTCLOUD_TRUSTED_DOMAINS: www.largechickens.com
+      NC_DEFAULT_APP: files
+      NC_THEME_NAME: Big Chickens
+      NC_THEME_SLOGAN: ''
+      NC_THEME_URL: https://www.largechickens.com/nextcloud/
+      NC_THEME_PRIMARY_COLOR: '#c98879'
+      NC_THEME_BACKGROUND_COLOR: '#c98879'
+      NC_THEME_BACKGROUND_image: /tmp/theming/background
+      NC_THEME_LOGO_HEADER_IMAGE: /tmp/theming/logoheader
+      NC_THEME_FAVICON: /tmp/theming/favicon
+      NC_THEME_DISABLE_USER_THEMING: 1
+      NC_WANTED_APPS: admin_audit sociallogin files_external serverinfo logreader theming_customcss
+      NC_GROUPS: sales marketing alldata
+      NC_CONFIGS: add_update##overwritehost##www.largechickens.com add_update##overwriteprotocol##https add_update##overwrite.cli.url##http://www.largechickens.com/nextcloud
+      NC_CONFIGS_DONT_ECHO_CONFIG: true
+      NC_FILES_EXTERNAL_CONFIG_PATH: /tmp/theming/71-files_external.json
+    volumes:
+      - ./nextcloud:/var/www/html
+      - ./sociallogin:/tmp/apps/sociallogin
+      - ./theming_customcss:/tmp/apps/theming_customcss
+      - ./theming:/tmp/theming
+      - ./app-hooks/before-starting:/docker-entrypoint-hooks.d/before-starting
+    depends_on:
+      mariadb:
+        condition: service_healthy
+    networks:
+      - nextcloud-net
+
+  postgres:
+    image: postgres:latest
+    container_name: postgres
+    restart: unless-stopped
+    volumes:
+      - ./postgres_data:/var/lib/postgresql/data
+    environment:
+      POSTGRES_DB: keycloakdb
+      POSTGRES_USER: keycloak
+      POSTGRES_PASSWORD: postgresql_password
+    ports:
+      - "5432:5432"
+    networks:
+      - nextcloud-net
+
+  keycloak:
+    image: quay.io/keycloak/keycloak:latest
+    container_name: keycloak
+    restart: always
+    command: start --db=postgres --import-realm --hostname https://www.largechickens.com/keycloak/
+    environment:
+      - KEYCLOAK_ADMIN=admin
+      - KEYCLOAK_ADMIN_PASSWORD=adminpassword
+      - KC_PROXY=edge
+      - KC_DB=postgres
+      - KC_DB_URL=jdbc:postgresql://postgres/keycloakdb
+      - KC_DB_USERNAME=keycloak
+      - KC_DB_PASSWORD=postgresql_password
+      - KC_HOSTNAME_URL=https://www.largechickens.com/keycloak/
+      - KC_HOSTNAME_ADMIN_URL=https://www.largechickens.com/keycloak/
+    depends_on:
+      - postgres
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./kc:/opt/keycloak/data/import/
+    networks:
+      - nextcloud-net
+
+  nginx:
+    image: nginx:latest
+    container_name: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/html:/etc/nginx/html
+      - ./nginx/ssl:/etc/nginx/ssl
+      - ./logs:/var/log/nginx/
+    ports:
+      - "80:80"
+      - "443:443"
+    depends_on:
+      - nextcloud
+      - keycloak
+    networks:
+      - nextcloud-net
+
+  portainer:
+    image: portainer/portainer-ce:latest
+    container_name: portainer
+    volumes:
+      - ./portainer:/data
+      - ./nginx/ssl:/certs
+      - /var/run/docker.sock:/var/run/docker.sock
+    ports:
+      - "9443:9443"
+    environment:
+      VIRTUAL_HOST: https://www.largechickens.com
+    restart: unless-stopped
+    command: --sslcert /certs/fullchain.pem --sslkey /certs/privkey.pem
+    networks:
+      - nextcloud-net
+
+  homepage:
+    image: ghcr.io/gethomepage/homepage:latest
+    container_name: homepage
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./homepage:/app/config
+      - ./homepage/images:/app/public/images
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+    restart: unless-stopped
+    networks:
+      - nextcloud-net
+
+networks:
+  nextcloud-net:
+    driver: bridge

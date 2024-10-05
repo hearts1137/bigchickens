@@ -1,0 +1,28 @@
+---
+# For configuration options and examples, please see:
+# https://gethomepage.dev/latest/configs/settings
+
+title: Small Chickens
+
+background:
+  image: /images/sky.jpg
+  blur: sm
+  saturate: 50
+  brightness: 75
+  opacity: 25
+
+showStats: true
+theme: dark
+color: slate
+
+layout:
+  Services:
+    style: row
+    columns: 3
+  Docker:
+    style: row
+    columns: 1
+
+headerStyle: clean
+hideVersion: true
+
